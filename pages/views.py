@@ -24,6 +24,6 @@ def about_view(request, *args, **kwargs):
     my_dict = {
         "my_text":  "This is about something",
         "my_number": 123,
-        "my_list": ["Primeiro", "Segundo", 3, "Quarto"]
+        "my_list": ["Primeiro", "Segundo", 3, "Quarto", 312, "Abc", "ABC"]
     }
     return render(request, "about.html", my_dict)

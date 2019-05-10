@@ -18,7 +18,15 @@ Usuário: <font color = green >{{ request.user }}</font>
 </ul>
 
 {% for my_subitem in my_list %}
-    <li> {{forloop.counter}} - {{ my_subitem }} </li>
+
+    {% if my_subitem == 312 %}
+        <li> {{ forloop.counter }} - {{ my_subitem|add:22 }} </li>
+    {% elif my_subitem == "Abc" %}
+        <li> This is not the network </li>
+    {% else%}
+        <li> {{forloop.counter}} - {{ my_subitem }} </li>
+    {% endif %}
+
 {% endfor %}
 
 {% endblock content %}
