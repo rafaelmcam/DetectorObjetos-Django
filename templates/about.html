@@ -6,7 +6,19 @@
 <p>This is a template</p>
 
 Usuário: <font color = green >{{ request.user }}</font>
-
-
 <p>Autênticado: {{ request.user.is_authenticated }} </p>
-{% endblock %}
+
+<p>
+    <font color = red> {{ my_text }}, {{ my_number }} </font>
+</p>
+
+<ul>
+    <li>Item 1</li>
+    <li>Item 2</li>
+</ul>
+
+{% for my_subitem in my_list %}
+    <li> {{forloop.counter}} - {{ my_subitem }} </li>
+{% endfor %}
+
+{% endblock content %}

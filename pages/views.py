@@ -21,4 +21,9 @@ def page1_view(request, *args, **kwargs):
     return HttpResponse("<font color = blue><center><h1>Page 1</h1></center>")
 
 def about_view(request, *args, **kwargs):
-    return render(request, "about.html", {})
+    my_dict = {
+        "my_text":  "This is about something",
+        "my_number": 123,
+        "my_list": ["Primeiro", "Segundo", 3, "Quarto"]
+    }
+    return render(request, "about.html", my_dict)
