@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h1>Informações Gerais</h1>
+<p>This is a template</p>
+
+Usuário: <font color = green >{{ request.user }}</font>
+
+
+<p>Autênticado: {{ request.user.is_authenticated }} </p>
+{% endblock %}
