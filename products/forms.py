@@ -3,6 +3,14 @@ from .models import Product
 
 
 class ProductForm(forms.ModelForm):
+    title       = forms.CharField(label = "", widget = forms.TextInput(attrs = {"placeholder": "Digite Aqui"}))
+    description = forms.CharField(  required = False,
+                                    widget = forms.Textarea(attrs={
+                                        "class": "new_class",
+                                        "rows": 20,
+                                        "placeholder": "Sua Descrição (Opcional)."
+                                    })
+                                 )
     class Meta:
         model = Product
         fields = [
@@ -10,6 +18,13 @@ class ProductForm(forms.ModelForm):
             "description",
             "price"
         ]
+
+    def clean_title(self, *args, **kwargs):
+        title = self.cleaned_data.get("title")
+        if "CFE" in title:
+            return title
+        else:
+            raise forms.ValidationError("This is not a valid title.")
 
 
 class RawProductForm(forms.Form):
