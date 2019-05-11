@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 # Create your models here.
 
@@ -11,4 +12,5 @@ class Product(models.Model):
     new_featured= models.BooleanField(default = False)
 
     def get_absolute_url(self):
-        return "/product/{}".format(self.id)
+        return reverse("dynamic_view", kwargs={"my_id": self.id})
+        #return "/product/{}".format(self.id)
