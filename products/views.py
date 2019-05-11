@@ -14,7 +14,6 @@ import cv2
 from imageai.Detection import ObjectDetection
 
 def recebe_imagem(obj):
-    # imagem.extencao
     imagem_db = obj.imagem
     print(imagem_db)
     imagem_read = imagem_db.read() # type 'str'
@@ -24,26 +23,13 @@ def recebe_imagem(obj):
     # retorna imagem para procesamento
     return imagem_op
 
-def filtros_view(request):
+def detec_view(request):
     form = FormOpencv(request.POST or None, request.FILES or None)
     if form.is_valid():
-        # class 'PDI.core_1.models.Opencv
+
         obj = Opencv(imagem = request.FILES['imagem'])
         print(obj)
         imagem = recebe_imagem(obj)
-
-        # Processamento dos filtros com opencv e Python
-        canny = cv2.Canny(imagem, 100, 200) # os segundo e terceiro argumentos são o limiar mínimo e máximo
-        # filtro gaussiano
-        gaussiano = cv2.GaussianBlur(imagem, (5,5), 0) # passa a imagem, o tamanho do kernel e o desvio padrão
-        # filtro laplaciano
-        laplaciano = cv2.Laplacian(imagem,cv2.CV_64F)
-        # filtro sobel em x
-        sobelx = cv2.Sobel(imagem, cv2.CV_64F, 1, 0, ksize=5)
-        # filtro sobel em y
-        sobely = cv2.Sobel(imagem, cv2.CV_64F, 0, 1, ksize=5)
-        # negativo
-        negativo = 255 - imagem
 
 
         model_weight_path = "resnet50_v2.0.1.h5"
@@ -53,24 +39,14 @@ def filtros_view(request):
         detector.loadModel()
 
         img = imagem.copy()
-        detections = detector.detectObjectsFromImage(input_type = "array", input_image = img, minimum_percentage_probability = 75)
+        detections = detector.detectObjectsFromImage(input_type = "array", input_image = img, minimum_percentage_probability = 90)
         #print(detections)
         for det in detections:
             cv2.rectangle(img, tuple(det["box_points"][:2]), tuple(det["box_points"][2:]), (0, 0, 0), 5)
             cv2.putText(img, "{} - {}".format(det["name"], det["percentage_probability"]), tuple(det["box_points"][:2]), cv2.FONT_HERSHEY_PLAIN, 1.5,(0,0,255),2,cv2.LINE_AA)
 
-        # cv2.imshow("resized", cv2.resize(img, (int(img.shape[1]/sc), int(img.shape[0]/sc)  )))
-        # cv2.imshow("full", img)
-
         cv2.imwrite("products/static/img/original.png", imagem)
         cv2.imwrite("products/static/img/canny.png", img)
-        # cv2.imwrite("PDI/core_1/static/img/original.png", imagem)
-        # cv2.imwrite("PDI/core_1/static/img/canny.png", canny)
-        # cv2.imwrite("PDI/core_1/static/img/laplaciano.png", laplaciano)
-        # cv2.imwrite("PDI/core_1/static/img/gaussiano.png", gaussiano)
-        # cv2.imwrite("PDI/core_1/static/img/sobelx.png", sobelx)
-        # cv2.imwrite("PDI/core_1/static/img/sobely.png", sobely)
-        # cv2.imwrite("PDI/core_1/static/img/negativo.png", negativo)
 
         data = True
         return render(request, 'filtros.html', {'form': form, 'data': data})
@@ -80,6 +56,8 @@ def filtros_view(request):
 
     return render(request, 'products/filtros.html', {'form': FormOpencv})
 
+
+# treino youtube tutorial
 
 def product_list_view(request):
     queryset = Product.objects.all()
@@ -102,8 +80,6 @@ def product_delete_view(request, my_id):
     }
     return render(request, "products/product_dynamic_delete.html", context)
 
-
-
 def dynamic_lookup_view(request, my_id, *args, **kwargs):
     #obj = Product.objects.get(id = my_id)
     obj = get_object_or_404(Product, id = my_id)
@@ -111,22 +87,6 @@ def dynamic_lookup_view(request, my_id, *args, **kwargs):
         "object": obj
     }
     return render(request, "products/product_detail.html", context)
-
-# def product_create_view(request, *args, **kwargs):
-#     initial_data = {
-#         "title": "My awesome title"
-#     }
-    
-#     obj = Product.objects.get(id = 1)
-
-#     form = ProductForm(request.POST or None, instance = obj)
-#     if form.is_valid():
-#         form.save()
-#     context = {
-#         "form": form
-#     }
-#     return render(request, "products/product_create.html", context)
-
 
 
 def product_create_view(request, *args, **kwargs):
@@ -145,30 +105,6 @@ def product_create_view(request, *args, **kwargs):
     }
     return render(request, "products/product_create.html", context)
 
-
-
-
-# def product_create_view(request, *args, **kwargs):
-#     #print(request.GET)
-#     #print(request.POST)
-#     #title = request.POST["title"]
-#     if request.method == "POST":
-#         my_new_title = request.POST["title"]
-#         print(my_new_title)
-#     context = {}
-#     return render(request, "products/product_create.html", context)
-
-# def product_create_view(request, *args, **kwargs):
-#     form = ProductForm(request.POST or None)
-
-#     if form.is_valid():
-#         print(form.cleaned_data.get("title"))
-#         form.save()
-#         form = ProductForm()
-#     context = {
-#         "form": form
-#     }
-#     return render(request, "products/product_create.html", context)
 
 
 def product_detail_view(request, *args, **kwargs):

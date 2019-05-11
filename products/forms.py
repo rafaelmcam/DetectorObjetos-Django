@@ -23,12 +23,6 @@ class ProductForm(forms.ModelForm):
             "price"
         ]
 
-    # def clean_title(self, *args, **kwargs):
-    #     title = self.cleaned_data.get("title")
-    #     # if "CFE" in title:
-    #     #     return title
-    #     # else:
-    #     #     raise forms.ValidationError("This is not a valid title.")
 
 
 class RawProductForm(forms.Form):
