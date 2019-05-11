@@ -1,3 +1,12 @@
+Requisitos
+=============================
+
+Rede Pré-Treinada: resnet50_v2.0.1.h5
+
+Django == 2.0.7
+
+OpenCV
+
 Slides (Pasta PDF)
 =============================
 
