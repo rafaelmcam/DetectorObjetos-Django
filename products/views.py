@@ -57,6 +57,8 @@ def filtros_view(request):
         #print(detections)
         for det in detections:
             cv2.rectangle(img, tuple(det["box_points"][:2]), tuple(det["box_points"][2:]), (0, 0, 0), 5)
+            cv2.putText(img, "{} - {}".format(det["name"], det["percentage_probability"]), tuple(det["box_points"][:2]), cv2.FONT_HERSHEY_PLAIN, 1.5,(0,0,255),2,cv2.LINE_AA)
+
         # cv2.imshow("resized", cv2.resize(img, (int(img.shape[1]/sc), int(img.shape[0]/sc)  )))
         # cv2.imshow("full", img)
 
