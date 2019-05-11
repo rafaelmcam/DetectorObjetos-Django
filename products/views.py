@@ -1,9 +1,24 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 
 from .models import Product
 from .forms import ProductForm, RawProductForm
 
 # Create your views here.
+
+
+def product_delete_view(request, my_id):
+    obj = get_object_or_404(Product, id = my_id)
+    print(obj.title)
+    # print(request, my_id)
+    # print(request.method)
+    if request.method == "POST":
+        # print("BLA2")
+        obj.delete()
+        return redirect('../../')
+    context = {
+        "object": obj
+    }
+    return render(request, "products/product_dynamic_delete.html", context)
 
 
 
@@ -15,36 +30,38 @@ def dynamic_lookup_view(request, my_id, *args, **kwargs):
     }
     return render(request, "products/product_detail.html", context)
 
-def product_create_view(request, *args, **kwargs):
-    initial_data = {
-        "title": "My awesome title"
-    }
-    
-    obj = Product.objects.get(id = 1)
-
-    form = ProductForm(request.POST or None, instance = obj)
-    if form.is_valid():
-        form.save()
-    context = {
-        "form": form
-    }
-    return render(request, "products/product_create.html", context)
-
-
-
 # def product_create_view(request, *args, **kwargs):
-#     my_form = RawProductForm()
-#     if request.method == "POST":
-#         my_form = RawProductForm(request.POST)
-#         if my_form.is_valid():
-#             print(my_form.cleaned_data)
-#             Product.objects.create(**my_form.cleaned_data)
-#         else:
-#             print(my_form.errors)
+#     initial_data = {
+#         "title": "My awesome title"
+#     }
+    
+#     obj = Product.objects.get(id = 1)
+
+#     form = ProductForm(request.POST or None, instance = obj)
+#     if form.is_valid():
+#         form.save()
 #     context = {
-#         "form": my_form
+#         "form": form
 #     }
 #     return render(request, "products/product_create.html", context)
+
+
+
+def product_create_view(request, *args, **kwargs):
+    my_form = RawProductForm()
+    print("BLA")
+    if request.method == "POST":
+        print("BLA2")
+        my_form = RawProductForm(request.POST)
+        if my_form.is_valid():
+            print(my_form.cleaned_data)
+            Product.objects.create(**my_form.cleaned_data)
+        else:
+            print(my_form.errors)
+    context = {
+        "form": my_form
+    }
+    return render(request, "products/product_create.html", context)
 
 
 
