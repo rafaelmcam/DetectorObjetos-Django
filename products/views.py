@@ -5,6 +5,24 @@ from .forms import ProductForm, RawProductForm
 
 # Create your views here.
 
+
+def product_create_view(request, *args, **kwargs):
+    initial_data = {
+        "title": "My awesome title"
+    }
+    
+    obj = Product.objects.get(id = 1)
+
+    form = ProductForm(request.POST or None, instance = obj)
+    if form.is_valid():
+        form.save()
+    context = {
+        "form": form
+    }
+    return render(request, "products/product_create.html", context)
+
+
+
 # def product_create_view(request, *args, **kwargs):
 #     my_form = RawProductForm()
 #     if request.method == "POST":
@@ -32,17 +50,17 @@ from .forms import ProductForm, RawProductForm
 #     context = {}
 #     return render(request, "products/product_create.html", context)
 
-def product_create_view(request, *args, **kwargs):
-    form = ProductForm(request.POST or None)
+# def product_create_view(request, *args, **kwargs):
+#     form = ProductForm(request.POST or None)
 
-    if form.is_valid():
-        print(form.cleaned_data.get("title"))
-        form.save()
-        form = ProductForm()
-    context = {
-        "form": form
-    }
-    return render(request, "products/product_create.html", context)
+#     if form.is_valid():
+#         print(form.cleaned_data.get("title"))
+#         form.save()
+#         form = ProductForm()
+#     context = {
+#         "form": form
+#     }
+#     return render(request, "products/product_create.html", context)
 
 
 def product_detail_view(request, *args, **kwargs):
