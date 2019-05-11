@@ -1,0 +1,9 @@
+\babel@toc {brazilian}{}
+\beamer@sectionintoc {1}{Capa}{1}{0}{1}
+\beamer@sectionintoc {2}{Rede Neurais}{2}{0}{2}
+\beamer@subsectionintoc {2}{1}{Overview}{2}{0}{2}
+\beamer@subsectionintoc {2}{2}{ResNet50}{3}{0}{2}
+\beamer@subsectionintoc {2}{3}{Desempenho}{4}{0}{2}
+\beamer@sectionintoc {3}{Interface Web}{7}{0}{3}
+\beamer@subsectionintoc {3}{1}{Overview}{7}{0}{3}
+\beamer@subsectionintoc {3}{2}{Resultados Web}{8}{0}{3}
