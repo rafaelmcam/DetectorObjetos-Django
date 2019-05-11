@@ -43,7 +43,7 @@ def detec_view(request):
         #print(detections)
         for det in detections:
             cv2.rectangle(img, tuple(det["box_points"][:2]), tuple(det["box_points"][2:]), (0, 0, 0), 5)
-            cv2.putText(img, "{} - {}".format(det["name"], det["percentage_probability"]), tuple(det["box_points"][:2]), cv2.FONT_HERSHEY_PLAIN, 1.5,(0,0,255),2,cv2.LINE_AA)
+            cv2.putText(img, "{} - {}".format(det["name"], det["percentage_probability"]), tuple(det["box_points"][:2]), cv2.FONT_HERSHEY_PLAIN, 5,(0,0,255),3,cv2.LINE_AA)
 
         cv2.imwrite("products/static/img/original.png", imagem)
         cv2.imwrite("products/static/img/canny.png", img)
