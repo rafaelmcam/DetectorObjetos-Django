@@ -6,7 +6,7 @@
 
     <!-- Jumbotron Header -->
     <header class="jumbotron hero-spacer">
-        <h3><b>Filtros</b> - Faça upload da imagem</h3>
+        <h3><b>Filtros</b> - Faça upload da imagem para detecção de objetos</h3>
         <h1></h1>
         <p>
           <!-- Formulario responsavel por baixar a imagem-->
@@ -40,17 +40,16 @@
     <!-- /.row -->
           {% if  data %}
           
-
-          
-          <div class="row">
-                <div class="column">
-                    <img src="{% static 'img/original.png'%}" width="200" alt="" />
-                </div>
-                <div class="column">
-                    <img src="{% static 'img/canny.png'%}" width="200" alt="" />
-                </div>
-            
-              </div>
+          <span class="image">
+                <table align="center">
+                  <tr>
+                        <th><img src="{% static 'img/original.png'%}" style="width: 400px"><br>Imagem Original</th>
+                        <th><img src="{% static 'img/canny.png'%}" style="width: 400px"><br>Detecção</th>
+                  </tr>      
+                  
+                </table>
+              </span>
+    
        
 
          
