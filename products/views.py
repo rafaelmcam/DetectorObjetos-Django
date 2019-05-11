@@ -4,8 +4,14 @@ from .models import Product, Opencv
 from .forms import ProductForm, RawProductForm, FormOpencv
 
 # Create your views here.
-import numpy as np
+
+import matplotlib.pyplot as plt
+import numpy as np 
+import math
+import os
+import glob
 import cv2
+from imageai.Detection import ObjectDetection
 
 def recebe_imagem(obj):
     # imagem.extencao
@@ -39,8 +45,23 @@ def filtros_view(request):
         # negativo
         negativo = 255 - imagem
 
+
+        model_weight_path = "resnet50_v2.0.1.h5"
+        detector = ObjectDetection()
+        detector.setModelTypeAsRetinaNet()
+        detector.setModelPath(model_weight_path)
+        detector.loadModel()
+
+        img = imagem.copy()
+        detections = detector.detectObjectsFromImage(input_type = "array", input_image = img, minimum_percentage_probability = 75)
+        #print(detections)
+        for det in detections:
+            cv2.rectangle(img, tuple(det["box_points"][:2]), tuple(det["box_points"][2:]), (0, 0, 0), 5)
+        # cv2.imshow("resized", cv2.resize(img, (int(img.shape[1]/sc), int(img.shape[0]/sc)  )))
+        # cv2.imshow("full", img)
+
         cv2.imwrite("products/static/img/original.png", imagem)
-        cv2.imwrite("products/static/img/canny.png", canny)
+        cv2.imwrite("products/static/img/canny.png", img)
         # cv2.imwrite("PDI/core_1/static/img/original.png", imagem)
         # cv2.imwrite("PDI/core_1/static/img/canny.png", canny)
         # cv2.imwrite("PDI/core_1/static/img/laplaciano.png", laplaciano)
