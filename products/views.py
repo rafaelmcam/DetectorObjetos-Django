@@ -1,9 +1,61 @@
 from django.shortcuts import render, get_object_or_404, redirect
 
-from .models import Product
-from .forms import ProductForm, RawProductForm
+from .models import Product, Opencv
+from .forms import ProductForm, RawProductForm, FormOpencv
 
 # Create your views here.
+import numpy as np
+import cv2
+
+def recebe_imagem(obj):
+    # imagem.extencao
+    imagem_db = obj.imagem
+    print(imagem_db)
+    imagem_read = imagem_db.read() # type 'str'
+    imagem_np = np.asarray(bytearray(imagem_read), dtype="uint8") # type 'numpy.ndarray'
+    imagem_op = cv2.imdecode(imagem_np, cv2.IMREAD_COLOR) # type 'numpy.ndarray'
+
+    # retorna imagem para procesamento
+    return imagem_op
+
+def filtros_view(request):
+    form = FormOpencv(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        # class 'PDI.core_1.models.Opencv
+        obj = Opencv(imagem = request.FILES['imagem'])
+        print(obj)
+        imagem = recebe_imagem(obj)
+
+        # Processamento dos filtros com opencv e Python
+        canny = cv2.Canny(imagem, 100, 200) # os segundo e terceiro argumentos são o limiar mínimo e máximo
+        # filtro gaussiano
+        gaussiano = cv2.GaussianBlur(imagem, (5,5), 0) # passa a imagem, o tamanho do kernel e o desvio padrão
+        # filtro laplaciano
+        laplaciano = cv2.Laplacian(imagem,cv2.CV_64F)
+        # filtro sobel em x
+        sobelx = cv2.Sobel(imagem, cv2.CV_64F, 1, 0, ksize=5)
+        # filtro sobel em y
+        sobely = cv2.Sobel(imagem, cv2.CV_64F, 0, 1, ksize=5)
+        # negativo
+        negativo = 255 - imagem
+
+        cv2.imwrite("products/static/img/original.png", imagem)
+        cv2.imwrite("products/static/img/canny.png", canny)
+        # cv2.imwrite("PDI/core_1/static/img/original.png", imagem)
+        # cv2.imwrite("PDI/core_1/static/img/canny.png", canny)
+        # cv2.imwrite("PDI/core_1/static/img/laplaciano.png", laplaciano)
+        # cv2.imwrite("PDI/core_1/static/img/gaussiano.png", gaussiano)
+        # cv2.imwrite("PDI/core_1/static/img/sobelx.png", sobelx)
+        # cv2.imwrite("PDI/core_1/static/img/sobely.png", sobely)
+        # cv2.imwrite("PDI/core_1/static/img/negativo.png", negativo)
+
+        data = True
+        return render(request, 'filtros.html', {'form': form, 'data': data})
+
+    else:
+        form = FormOpencv()
+
+    return render(request, 'products/filtros.html', {'form': FormOpencv})
 
 
 def product_list_view(request):

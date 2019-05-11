@@ -15,9 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 
 from pages.views import home_view, page1_view, about_view
-from products.views import product_detail_view, product_create_view, dynamic_lookup_view, product_delete_view, product_list_view
+from products.views import product_detail_view, product_create_view, dynamic_lookup_view, product_delete_view, product_list_view, filtros_view
 
 urlpatterns = [
     path("", home_view, name = "home"),
@@ -27,5 +29,11 @@ urlpatterns = [
     path("product/", product_list_view, name = "product_main"),
     path("product/<int:my_id>/", dynamic_lookup_view, name = "dynamic_view"),
     path("product/<int:my_id>/delete", product_delete_view, name = "dynamic_delete"),
+    path("filtros/", filtros_view, name = "filtros_page"),
     path('admin/', admin.site.urls),
 ]
+
+# Configuracao para os arquivos de media
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    print("URL PATTERNS: \n\n\n", urlpatterns)

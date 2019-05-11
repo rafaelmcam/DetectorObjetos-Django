@@ -3,6 +3,9 @@ from django.urls import reverse
 
 # Create your models here.
 
+class Opencv(models.Model):
+    imagem = models.ImageField(upload_to="opencv/media")
+
 class Product(models.Model):
     title       = models.CharField(max_length = 120)
     description = models.TextField(blank = True, null = True)

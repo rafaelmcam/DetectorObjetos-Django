@@ -1,6 +1,10 @@
 from django import forms
-from .models import Product
+from .models import Product, Opencv
 
+class FormOpencv(forms.ModelForm):
+    class Meta:
+        model = Opencv
+        fields = ['imagem']
 
 class ProductForm(forms.ModelForm):
     title       = forms.CharField(label = "", widget = forms.TextInput(attrs = {"placeholder": "Digite Aqui"}))

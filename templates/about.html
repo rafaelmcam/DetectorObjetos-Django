@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 
@@ -28,5 +29,9 @@ Usuário: <font color = green >{{ request.user }}</font>
     {% endif %}
 
 {% endfor %}
+
+
+
+<img src="{% static 'img/canny.png'%}" alt="" />
 
 {% endblock content %}
